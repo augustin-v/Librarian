@@ -185,7 +185,8 @@ impl Backend {
             Ok(resp) => tracing::info!("Agent launched successfully: {}", resp),
             Err(e) => tracing::warn!("Agent launch test failed: {}", e),
         }
-
+        let facilitator_url =
+        env::var("FACILITATOR_URL").unwrap_or_else(|_| "https://facilitator.x402.rs".to_string());
         let base_url = env::var("API_BASE_URL")
             .unwrap_or_else(|_| "http://localhost:8080/".to_string());
         let port = env::var("API_PORT").unwrap_or_else(|_| "8080".to_string());
