@@ -10,26 +10,19 @@ use rig::providers::openai::TEXT_EMBEDDING_3_SMALL;
 use rig::providers::openai::{TEXT_EMBEDDING_ADA_002, client::Client as OpenAIClient};
 use rig::vector_store::in_memory_store::InMemoryVectorStore;
 
-// Initialize the full RAG agent (embed MCPs, index, build with preamble)
-// Return concrete Agent<ResponsesCompletionModel>
 pub async fn init_agent() -> Result<Agent<ResponsesCompletionModel>> {
-    // OpenAI client (loads OPENAI_API_KEY from env)
     let openai_client = OpenAIClient::from_env();
     let embedding_model = openai_client.embedding_model(TEXT_EMBEDDING_3_SMALL);
 
-    // Load & embed placeholder MCPs
     let mcps = sample_mcps();
     let embeddings = EmbeddingsBuilder::new(embedding_model.clone())
         .documents(mcps)?
         .build()
-        .await?; // await the build() future, then propagate error
+        .await?; 
 
-    // Vector store & index
     let vector_store = InMemoryVectorStore::from_documents(embeddings);
     let index = vector_store.index(embedding_model);
 
-    // Build agent with preamble (gpt-4o-mini as requested)
-    // Note: depending on rig API, .agent(...).preamble(...).dynamic_context(...).build() returns Agent<ResponsesCompletionModel>
     let agent = openai_client
         .agent("gpt-4o-mini")
         .preamble("
@@ -199,10 +192,8 @@ A:\n
         .dynamic_context(3, index)
         .build();
 
-    // NOTE: Depending on rig's Prompt API, Prompt::new may be a trait or a type.
-    // If compiler complains about Prompt::new, replace with the concrete constructor the rig crate exposes.
     let test_prompt = "Test: Librarian ready for queries.";
-    agent.prompt(test_prompt).await?; // Silent test call
+    agent.prompt(test_prompt).await?; // test call
 
     Ok(agent)
 }

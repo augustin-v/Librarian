@@ -17,9 +17,7 @@ async fn main() -> Result<()> {
         .with(tracing_subscriber::fmt::layer())
         .init();
 
-    // init_agent now returns Agent<ResponsesCompletionModel>
     let agent = utils::init_agent().await?;
-    // Backend now specialized on ResponsesCompletionModel
     let backend = backend::Backend::new(agent);
     if let Err(e) = backend.launch().await {
         eprintln!("Failed to launch backend: {}", e);

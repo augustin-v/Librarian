@@ -22,9 +22,9 @@ use tracing::{Instrument, info_span};
 use tracing_opentelemetry::OpenTelemetrySpanExt;
 use x402_axum::{IntoPriceTag, X402Middleware};
 use x402_rs::network::{Network, USDCDeployment};
-use x402_rs::{address_evm, address_sol}; // keep if other places need this
+use x402_rs::{address_evm, address_sol};
 
-// Placeholder MCP data (simple struct for RAG; derives Embed on desc for now)
+// placeholder MCP data for now
 #[derive(Embed, Serialize, Deserialize, Clone, Debug, Eq, PartialEq)]
 pub struct McpEntry {
     pub name: String,
@@ -36,7 +36,6 @@ pub struct McpEntry {
 }
 
 pub fn sample_mcps() -> Vec<McpEntry> {
-    /* same as before */
     vec![
         McpEntry {
             name: "UnityForge".to_string(),
@@ -62,7 +61,6 @@ pub struct DiscoverRequest {
     pub client_type: Option<String>,
 }
 
-// NOTE: handler now accepts an Arc<Agent<ResponsesCompletionModel>> as state
 #[tracing::instrument(skip_all)]
 async fn discover_handler(
     State(agent): State<Arc<Agent<ResponsesCompletionModel>>>,
@@ -70,7 +68,6 @@ async fn discover_handler(
 ) -> impl IntoResponse {
     let query = req.query;
 
-    // Simplified prompt as string — keep same Prompt usage if rig requires it:
     let prompt = format!(
         "User query: {}. As Librarian, recommend a tool match and explain briefly.",
         query
@@ -93,7 +90,7 @@ async fn discover_handler(
 
 pub struct Backend {
     pub app: Router,
-    pub agent: Arc<Agent<ResponsesCompletionModel>>, // store Arc so we can clone into router state
+    pub agent: Arc<Agent<ResponsesCompletionModel>>,
 }
 
 impl Backend {
@@ -101,19 +98,19 @@ impl Backend {
         let facilitator_url = env::var("FACILITATOR_URL")
             .unwrap_or_else(|_| "https://facilitator.x402.rs".to_string());
 
+        let base_url = env::var("API_BASE_URL")
+            .unwrap_or_else(|_| "http://localhost:8080/".to_string());
         let x402_base = X402Middleware::try_from(facilitator_url.clone())
             .expect("Failed to create X402 middleware")
-            .with_base_url(url::Url::parse("http://localhost:3000/").expect("Invalid base URL"));
+            .with_base_url(url::Url::parse(&base_url).expect("Invalid base URL"));
 
         let usdc_base_sepolia = USDCDeployment::by_network(Network::BaseSepolia)
             .pay_to(address_evm!("0xf2757Fe8Ba90ad98dAed8e6254bA9A677069826a"));
         let usdc_solana = USDCDeployment::by_network(Network::Solana)
             .pay_to(address_sol!("11111111111111111111111111111112"));
 
-        // wrap agent into Arc so we can put it into router state
         let agent_arc = Arc::new(agent);
 
-        // Build router and attach state that is just the Arc<Agent<_>>
         let app = Router::new()
             .route("/health", get(|| async { "OK" }))
             .route(
@@ -189,18 +186,20 @@ impl Backend {
             Err(e) => tracing::warn!("Agent launch test failed: {}", e),
         }
 
-        let facilitator_url = env::var("FACILITATOR_URL")
-            .unwrap_or_else(|_| "https://facilitator.x402.rs".to_string());
+        let base_url = env::var("API_BASE_URL")
+            .unwrap_or_else(|_| "http://localhost:8080/".to_string());
+        let port = env::var("API_PORT").unwrap_or_else(|_| "8080".to_string());
+        let bind_addr = format!("0.0.0.0:{}", port);
 
         let x402_base = X402Middleware::try_from(facilitator_url)
             .expect("Failed to create X402 middleware")
-            .with_base_url(url::Url::parse("http://localhost:3000/").expect("Invalid base URL"));
+            .with_base_url(url::Url::parse(&base_url).expect("Invalid base URL"));
 
         tracing::info!("Using facilitator on {}", x402_base.facilitator_url());
 
-        let listener = tokio::net::TcpListener::bind("0.0.0.0:3000")
+        let listener = tokio::net::TcpListener::bind(&bind_addr)
             .await
-            .context("Failed to bind to 0.0.0.0:3000")?;
+            .with_context(|| format!("Failed to bind to {}", bind_addr))?;
         tracing::info!("Listening on {}", listener.local_addr().unwrap());
 
         // Serve the router that already has state attached
