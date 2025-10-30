@@ -8,10 +8,10 @@ use axum::{
     response::{IntoResponse, Json as AxumJson},
     routing::{get, post},
 };
+use std::fs::File;
 use opentelemetry::trace::Status;
 use rig::Embed;
 use rig::agent::Agent;
-use rig::completion::CompletionModel;
 use rig::completion::Prompt;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -27,31 +27,22 @@ use x402_rs::{address_evm, address_sol};
 // placeholder MCP data for now
 #[derive(Embed, Serialize, Deserialize, Clone, Debug, Eq, PartialEq)]
 pub struct McpEntry {
+    #[embed]
     pub name: String,
     pub endpoint: String,
     pub version: String,
+    #[embed]
     pub capabilities: Vec<String>,
     #[embed]
     pub desc: String,
 }
 
-pub fn sample_mcps() -> Vec<McpEntry> {
-    vec![
-        McpEntry {
-            name: "UnityForge".to_string(),
-            endpoint: "https://unityforge.example.com/mcp/v1".to_string(),
-            version: "1.2".to_string(),
-            capabilities: vec!["build_scene".to_string(), "import_asset".to_string(), "run_physics".to_string()],
-            desc: "UnityForge: Game engine MCP for AI agents. Supports C# scripting, asset loading, physics simulations, and scene building with low latency.".to_string(),
-        },
-        McpEntry {
-            name: "FinanceAPI".to_string(),
-            endpoint: "https://financeapi.example.com/mcp/v1".to_string(),
-            version: "1.3".to_string(),
-            capabilities: vec!["fetch_stocks".to_string(), "analyze_trends".to_string()],
-            desc: "FinanceAPI: Financial data MCP for trading agents. Provides stock fetches, market trends, portfolio analysis, and risk modeling.".to_string(),
-        },
-    ]
+pub fn load_mcps_from_file<P: AsRef<std::path::Path>>(path: P) -> Result<Vec<McpEntry>> {
+    let file = File::open(&path)
+        .with_context(|| format!("Failed to open {:?}", path.as_ref()))?;
+    let entries: Vec<McpEntry> = serde_json::from_reader(file)
+        .with_context(|| "Failed to parse mcps.json into Vec<McpEntry>")?;
+    Ok(entries)
 }
 
 #[derive(Deserialize)]

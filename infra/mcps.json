@@ -1,0 +1,170 @@
+[
+  {
+    "name": "com.apple-rag/mcp-server",
+    "endpoint": "https://mcp.apple-rag.com",
+    "version": "1.1.3",
+    "desc": "Apple Developer Documentation with Semantic Search, RAG, and AI reranking for MCP clients",
+    "capabilities": [],
+    "diagnostics": {
+      "status": 200,
+      "protocol_version": "2025-03-26",
+      "server_name": "apple-rag-mcp",
+      "server_version": "2.0.0",
+      "session_id_present": false
+    }
+  },
+  {
+    "name": "com.brokerchooser/broker-safety",
+    "endpoint": "https://mcp.brokerchooser.com/servers/mcp",
+    "version": "1.0.0",
+    "desc": "MCP server offering regulator-sourced legitimacy checks on investment entities by name or URL.",
+    "capabilities": [],
+    "diagnostics": {
+      "status": 200,
+      "protocol_version": "2025-06-18",
+      "server_name": "Laravel MCP Server",
+      "server_version": "0.0.1",
+      "session_id_present": true
+    }
+  },
+  {
+    "name": "com.proxylink-mcp/mcp-server",
+    "endpoint": "https://proxylink-mcp.com",
+    "version": "2.0.0",
+    "desc": "ProxyLink MCP server for finding and booking home service professionals",
+    "capabilities": [],
+    "diagnostics": {
+      "status": 200,
+      "protocol_version": "2025-06-18",
+      "server_name": "Proxylink MCP Server",
+      "server_version": "2.0.0",
+      "session_id_present": false
+    }
+  },
+  {
+    "name": "com.redpanda/docs-mcp",
+    "endpoint": "https://docs.redpanda.com/mcp",
+    "version": "1.0.0",
+    "desc": "Get authoritative answers to questions about Redpanda.",
+    "capabilities": [],
+    "diagnostics": {
+      "status": 200,
+      "protocol_version": "2025-06-18",
+      "server_name": "Redpanda Docs MCP",
+      "server_version": "0.2.0",
+      "session_id_present": false
+    }
+  },
+  {
+    "name": "com.ritzademo/acme-todo",
+    "endpoint": "https://mcp.ritzademo.com/mcp/ritza-rzx-our91",
+    "version": "1.0.0",
+    "desc": "An MCP server for a simple todo list",
+    "capabilities": [],
+    "diagnostics": {
+      "status": 200,
+      "protocol_version": "2024-11-05",
+      "server_name": "Gram",
+      "server_version": "0.0.0",
+      "session_id_present": true
+    }
+  },
+  {
+    "name": "com.teamwork/mcp",
+    "endpoint": "https://mcp.ai.teamwork.com",
+    "version": "1.2.4",
+    "desc": "The Teamwork.com official MCP server helps teams efficiently manage client projects with AI.",
+    "capabilities": [],
+    "diagnostics": {
+      "status": 200,
+      "protocol_version": "2025-06-18",
+      "server_name": "Teamwork.com",
+      "server_version": "1.6.8",
+      "session_id_present": true
+    }
+  },
+  {
+    "name": "com.wallet-connectors/wallet-verifier-mcp",
+    "endpoint": "https://wallet-connectors.com/mcp",
+    "version": "1.0.0",
+    "desc": "MCP server for verifying EUDI/Talao wallet data via OIDC4VP (pull) for AI agents.",
+    "capabilities": [],
+    "diagnostics": {
+      "status": 200,
+      "protocol_version": "2025-06-18",
+      "server_name": "MCP server for data wallet",
+      "server_version": "1.1.0",
+      "session_id_present": false
+    }
+  },
+  {
+    "name": "dev.promplate/hmr",
+    "endpoint": "https://pyth-on-line.promplate.dev/hmr/mcp",
+    "version": "1.0.0",
+    "desc": "Hot Module Reload (HMR) for Python with reactive programming and MCP tools",
+    "capabilities": [],
+    "diagnostics": {
+      "status": 200,
+      "protocol_version": "2025-06-18",
+      "server_name": "hmr-docs",
+      "server_version": "1.0.0",
+      "session_id_present": true
+    }
+  },
+  {
+    "name": "dev.svelte/mcp",
+    "endpoint": "https://mcp.svelte.dev/mcp",
+    "version": "0.1.10",
+    "desc": "The official Svelte MCP server providing docs and autofixing tools for Svelte development",
+    "capabilities": [],
+    "diagnostics": {
+      "status": 200,
+      "protocol_version": "2025-06-18",
+      "server_name": "Svelte MCP",
+      "server_version": "0.0.1",
+      "session_id_present": true
+    }
+  },
+  {
+    "name": "info.mosaique/mcp",
+    "endpoint": "https://mcp.mosaique.info",
+    "version": "1.0.0",
+    "desc": "Search and list latest international news (sources, comments, knowledge graph).",
+    "capabilities": [],
+    "diagnostics": {
+      "status": 200,
+      "protocol_version": "2025-06-18",
+      "server_name": "Mosaique.MCP",
+      "server_version": "1.0.0.0",
+      "session_id_present": true
+    }
+  },
+  {
+    "name": "net.gepuro.mcp-company-lens-v1/company-lens-mcp-registry",
+    "endpoint": "https://mcp-company-lens-v1.gepuro.net/mcp",
+    "version": "1.0.0",
+    "desc": "Search Japanese company database",
+    "capabilities": [],
+    "diagnostics": {
+      "status": 200,
+      "protocol_version": "2025-03-26",
+      "server_name": "Toolbox",
+      "server_version": "0.9.0+container.container.release.linux.amd64.2b69700c5e40ad37eafd94f378a2e1174879402b",
+      "session_id_present": true
+    }
+  },
+  {
+    "name": "org.io-aerospace/mcp-server",
+    "endpoint": "https://mcp.io-aerospace.org",
+    "version": "1.0.0",
+    "desc": "MCP server for aerospace calculations: orbital mechanics, ephemeris, DSN operations, ...",
+    "capabilities": [],
+    "diagnostics": {
+      "status": 200,
+      "protocol_version": "2025-06-18",
+      "server_name": "IO Aerospace -- MCP Server",
+      "server_version": "0.1.0",
+      "session_id_present": true
+    }
+  }
+]
