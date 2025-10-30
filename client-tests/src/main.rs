@@ -12,7 +12,7 @@ async fn main() -> Result<()> {
     dotenv().ok();
 
     let request_body = json!({
-        "query": "Unity MCP for game building",
+        "query": "I need to build a cool frontend",
         "filters": {"latency": "low", "cost": "<0.001"},
         "client_type": "native"
     });
@@ -29,7 +29,7 @@ async fn main() -> Result<()> {
     let body_str = serde_json::to_string(&request_body).context("Failed to serialize JSON body")?;
 
     let response = http_client
-        .post("http://localhost:3000/discover")
+        .post("http://localhost:8080/discover")
         .header("Content-Type", "application/json")
         .body(body_str)
         .send()
